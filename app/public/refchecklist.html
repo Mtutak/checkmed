@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CheckMed</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+    /* For dynamic form fields http://bootsnipp.com/snippets/featured/dynamic-form-fields-add-amp-remove */
+    #field { 
+      margin-bottom: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">CheckMed</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">User Profile</a></li>
+        <li><a href="#">Community</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Build A Checklist</h1>      
+    <p>Add Your List Below!</p>
+  </div>
+</div>
+  
+<div class="container-fluid bg-3 text-center">    
+  <h3>Start Here:</h3><br>
+  <div class="row">
+     <div class="col-sm-6">
+      <p>Select Role</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-6">
+      <p>Checklist for ..</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-4"> 
+      <p>Symptoms:</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-4"> 
+      <p>Physical Exam</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-4">
+      <p>Labs</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+  </div>
+</div><br>
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-6">
+      <p>Procedures</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    <div class="col-sm-6"> 
+      <p>Medications</p>
+      <img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image">
+    </div>
+    
+  </div>
+</div><br><br>
+<!-- Dynamic Form Fields Add and Remove -->
+<div class="container">
+  <div class="row">
+    <input type="hidden" name="count" value="1" />
+        <div class="control-group" id="fields">
+            <label class="control-label" for="field1">Nice Multiple Form Fields</label>
+            <div class="controls" id="profs"> 
+                <form class="input-append">
+                    <div id="field"><input autocomplete="off" class="input" id="field1" name="prof1" type="text" placeholder="Type something" data-items="8"/><button id="b1" class="btn add-more" type="button">+</button></div>
+                </form>
+            <br>
+            <small>Press + to add another form field :)</small>
+            </div>
+        </div>
+  </div>
+</div>
+<!-- Example of Check List Group Returning JSON http://bootsnipp.com/snippets/featured/checked-list-group -->
+<div class="col-xs-6">
+            <h3 class="text-center">Colorful Example</h3>
+            <div class="well" style="max-height: 300px;overflow: auto;">
+              <ul id="check-list-box" class="list-group checked-list-box">
+                  <li class="list-group-item">Cras justo odio</li>
+                  <li class="list-group-item" data-color="success">Dapibus ac facilisis in</li>
+                  <li class="list-group-item" data-color="info">Morbi leo risus</li>
+                  <li class="list-group-item" data-color="warning">Porta ac consectetur ac</li>
+                  <li class="list-group-item" data-color="danger">Vestibulum at eros</li>
+                </ul>
+                <br />
+                <button class="btn btn-primary col-xs-12" id="get-checked-data">Get Checked Data</button>
+            </div>
+            <pre id="display-json"></pre>
+        </div>
+<footer class="container-fluid text-center">
+  <p>Copyright 2017 CheckMed</p>
+</footer>
+</body>
+<script type="text/javascript" src="assets/js/checklist.js"></script>
+</html>

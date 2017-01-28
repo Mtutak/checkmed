@@ -121,7 +121,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         dataRef.ref('users/' + user.uid + '/profile').set({
             displayName: user.displayName
         });
-        window.location.href = "test-1.html";
+        window.location.href = "checklist.html";
         userProfileToDom();
     } else {
         // No user is signed in.
