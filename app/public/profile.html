@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <meta charset="UTF-8">
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+	<title>CheckMed</title>
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet">
+	<!-- Bootstrap -->
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- FIREBASE -->
+	<script src="https://www.gstatic.com/firebasejs/3.5.2/firebase.js">
+	</script>
+	
+	
+	<!-- JQUERY FROM GOOGLE APIs -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!-- JQUERY UI CDN-->
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+	
+</head>
+<body>
+    <div class="container">
+<div class="row">
+<h1>Twitter Profile Card</h1>
+<p>You can use with Twitter API, bot or manual.</p>
+<!-- code start -->
+<div class="twPc-div">
+    <a class="twPc-bg twPc-block"></a>
+
+	<div>
+		<div class="twPc-button">
+            <!-- Twitter Button | you can get from: https://about.twitter.com/tr/resources/buttons#follow -->
+            <a href="https://twitter.com/mertskaplan" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false" data-dnt="true">Follow @mertskaplan</a>
+         
+		</div>
+
+		<a title="Mert Salih Kaplan" href="https://twitter.com/mertskaplan" class="twPc-avatarLink">
+			<img alt="Mert Salih Kaplan" src="https://pbs.twimg.com/profile_images/378800000352678934/34f9e192635975bf42e534434e2b6273_bigger.jpeg" class="twPc-avatarImg">
+		</a>
+
+		<div class="twPc-divUser">
+			<div class="twPc-divName">
+				<a href="https://twitter.com/mertskaplan">Mert S. Kaplan</a>
+			</div>
+			<span>
+				<a href="https://twitter.com/mertskaplan">@<span>mertskaplan</span></a>
+			</span>
+		</div>
+
+		<div class="twPc-divStats">
+			<ul class="twPc-Arrange">
+				<li class="twPc-ArrangeSizeFit">
+					<a href="https://twitter.com/mertskaplan" title="9.840 Tweet">
+						<span class="twPc-StatLabel twPc-block">Tweets</span>
+						<span class="twPc-StatValue">9.840</span>
+					</a>
+				</li>
+				<li class="twPc-ArrangeSizeFit">
+					<a href="https://twitter.com/mertskaplan/following" title="885 Following">
+						<span class="twPc-StatLabel twPc-block">Following</span>
+						<span class="twPc-StatValue">885</span>
+					</a>
+				</li>
+				<li class="twPc-ArrangeSizeFit">
+					<a href="https://twitter.com/mertskaplan/followers" title="1.810 Followers">
+						<span class="twPc-StatLabel twPc-block">Followers</span>
+						<span class="twPc-StatValue">1.810</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- code end -->
+</div>
+</div>
+<!-- 
+EXAMPLE TWOOOO 
+
+-->
+<div class="col-lg-6 col-sm-6">
+    <div class="card hovercard">
+        <div class="card-background">
+            <img class="card-bkimg" alt="" src="http://lorempixel.com/100/100/people/9/">
+            <!-- http://lorempixel.com/850/280/people/9/ -->
+        </div>
+        <div class="useravatar">
+            <img alt="" src="http://lorempixel.com/100/100/people/9/">
+        </div>
+        <div class="card-info"> <span class="card-title">Pamela Anderson</span>
+
+        </div>
+    </div>
+    <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+            <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <div class="hidden-xs">Stars</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="favorites" class="btn btn-default" href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+                <div class="hidden-xs">Favorites</div>
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button type="button" id="following" class="btn btn-default" href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                <div class="hidden-xs">Following</div>
+            </button>
+        </div>
+    </div>
+
+        <div class="well">
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="tab1">
+          <h3>This is tab 1</h3>
+        </div>
+        <div class="tab-pane fade in" id="tab2">
+          <h3>This is tab 2</h3>
+        </div>
+        <div class="tab-pane fade in" id="tab3">
+          <h3>This is tab 3</h3>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+   
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .jumbotron {
+      margin-bottom: 10px;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1 id='listTitle'></h1>      
+    <p>Checklist by: <span id='creator'></span></p>
+    <p id='role'></p>
+  </div>
+</div>
+
+<div class="container">    
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading for">Checklist for: </div>
+        <div class="panel-body">
+           <ul id='listFor'>
+            
+            </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8"> 
+      <div class="panel panel-danger">
+        <div class="panel-heading symp">Symptoms: </div>
+          <div class="panel-body">
+            <ul id='symptoms'>
+              
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+   
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading exam">Physical Exam: </div>
+        <div class="panel-body">
+           <ul id='physical'>
+            
+            </ul>
+        </div>
+      </div>
+    </div>
+  <br>
+    
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading lab">Labs: </div>
+        <div class="panel-body">
+           <ul id='labs'>
+            
+            </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading lab">Medications: </div>
+        <div class="panel-body">
+           <ul id='meds'>
+            
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class="col-sm-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading lab">Procedures: </div>
+        <div class="panel-body">
+           <ul id='proc'>
+            
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br><br>
+<footer class="container-fluid text-center">
+  <p>What Would You Like To Do?</p>  
+  <div id="navbar">
+    <a href='#' role="button" class="btn btn-primary .btn-lg">Save To PDF</a>
+    <a href='#' role="button" class="btn btn-primary .btn-lg">Edit Checklist</a>
+    <a href='#' role="button" class="btn btn-primary .btn-lg">Make A New Checklist</a>
+  </div>
+
+</footer>
+<script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
+<script>
+
+     // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
+        authDomain: "checkmed-2b213.firebaseapp.com",
+        databaseURL: "https://checkmed-2b213.firebaseio.com",
+        storageBucket: "checkmed-2b213.appspot.com",
+        messagingSenderId: "843994433143"
+    };
+    firebase.initializeApp(config);
+    var dataRef = firebase.database();
+    dataRef.ref('posts/-KbIpNWxYenT7HGHYwmh').on("value", function (snapshot) {
+        // If Firebase has a highPrice and highBidder stored (first case)
+        // Set the initial variables for highBidder equal to the stored values.
+        var role = snapshot.val().role;
+        var exam = snapshot.val().exam;
+        var labs = snapshot.val().labs;
+        var title = snapshot.val().title;
+        var use = snapshot.val().use; 
+        $.each(exam, function (i, val) {
+ $('#physical').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
+});
+        $.each(labs, function (i, val) {
+ $('#labs').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
+});
+        $.each(use, function (i,val) {
+ $('#listFor').append('<li>' + val + '</li>');
+});
+        $('#role').append(role);
+        $('#listTitle').append(title);
+
+        // Print the initial data to the console.
+        console.log(snapshot.val());
+        console.log(snapshot.val().exam);
+        console.log(snapshot.val().role);
+        console.log(snapshot.val().use);
+        console.log(snapshot.val().labs[0]);
+        // If any errors are experienced, log them to console.
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+</script>
+</body>
+</html>

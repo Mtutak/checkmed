@@ -33,6 +33,13 @@ $('.tab a').on('click', function (e) {
     $(target).fadeIn(600);
 });
 // Initialize Firebase
+var config = {
+    apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
+    authDomain: "checkmed-2b213.firebaseapp.com",
+    databaseURL: "https://checkmed-2b213.firebaseio.com",
+    storageBucket: "checkmed-2b213.appspot.com",
+    messagingSenderId: "843994433143"
+};
 firebase.initializeApp(config);
 // Initial Global Values
 var email = '';
@@ -112,10 +119,9 @@ firebase.auth().onAuthStateChanged(function (user) {
         $('#user-container').removeClass('hide');
         //Adds User Auth Data to Firebase Database
         dataRef.ref('users/' + user.uid + '/profile').set({
-            userID: user.uid,
-            email: user.email,
             displayName: user.displayName
         });
+        window.location.href = "test-1.html";
         userProfileToDom();
     } else {
         // No user is signed in.
@@ -155,8 +161,6 @@ function userProfileToDom() {
         // Log everything that's coming out of snapshot
         console.log(childSnapshot.val());
         console.log(childSnapshot.val().displayName);
-        console.log(childSnapshot.val().dateAdded);
-        console.log(childSnapshot.val().currentUser);
         $("#userData").html("<div class='userInfo'><span id='displayname'> ROCK ON " + displayName + "! </span></br><span id='email'> You're signed in with " + childSnapshot.val().email + "</div>");
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);

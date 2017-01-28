@@ -51,7 +51,7 @@
   <div class="form-group row">
     <div class="col-md-12">
             <h1 class="col-sm-2 control-label">Select Role!</h1>
-            <label>Enter Checklist Name:<input type="text" class="form-control"  name="title"></label>
+            <label>Enter Checklist Name:<input id='checkTitle' type="text" class="form-control"  name="title"></label>
         <div class="col-sm-10">
 
           <label><input type="radio" class="form-control"  name="roleradio">Doctor</label>
@@ -252,13 +252,34 @@ LABS CHECKLIST FOR STEP 4
 <script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
 <script type="text/javascript">
     // Activate Next Step
-
+var currentUser = '';
+var email = '';
 $(document).ready(function() {
     // Initialize Firebase
-
+var config = {
+    apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
+    authDomain: "checkmed-2b213.firebaseapp.com",
+    databaseURL: "https://checkmed-2b213.firebaseio.com",
+    storageBucket: "checkmed-2b213.appspot.com",
+    messagingSenderId: "843994433143"
+};
 firebase.initializeApp(config);
 
 var dataRef = firebase.database();
+
+
+//Get Active User Profile and Add to DB
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    currentUser = user.uid;
+        email = user.email;
+    console.log("Provider: " + currentUser.provider);
+        console.log(currentUser);
+        console.log("Email: " + user.email);
+        console.log("displayName: " + displayName);
+      }
+
+});
 
     var navListItems = $('ul.setup-panel li a'),
     //each form section is an allWells
@@ -373,7 +394,7 @@ $('#checkSubmit').on('click', function (e) {
     //Store Input in Variables
     // role = $('#txtEmail').val().trim();
     // use = $('#txtPassword').val().trim();
-   
+    var checkTitle = $('#checkTitle').val().trim();
     var symptomsArray = [];
     var examArray = [];
     var labsArray = [];
@@ -419,10 +440,8 @@ $('#checkSubmit').on('click', function (e) {
 
 
   });
-    var newPostKey = firebase.database().ref().child('checklists').push().key;
-  
-    console.log(userChecklist);
-    firebase.database().update('users/'+ uid + '/checklists/' + newPostKey).set({
+
+var postData = {
             role: 'role',
             use: 'use',
             title: checkTitle,
@@ -430,10 +449,32 @@ $('#checkSubmit').on('click', function (e) {
             exam: examArray,
             labs: labsArray,
             proc: procArray,
-            meds: medsArray
-            starCount: 0,
+            meds: medsArray,
+            starCount: 0
 
-        });
+        };
+
+    var newPostKey = firebase.database().ref().child('checklists').push().key;
+
+      var updates = {};
+  updates['/posts/' + newPostKey] = postData;
+  updates['/user-posts/' + currentUser + '/' + newPostKey] = postData;
+
+firebase.database().ref().update(updates);
+  
+    console.log(userChecklist);
+    // dataRef.update('users/'+ currentUser + '/checklists/' + newPostKey).set({
+    //         role: 'role',
+    //         use: 'use',
+    //         title: checkTitle,
+    //         symptoms: symptomsArray,
+    //         exam: examArray,
+    //         labs: labsArray,
+    //         proc: procArray,
+    //         meds: medsArray,
+    //         starCount: 0
+
+    //     });
     return false;
 });
 
