@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CheckMed</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="newCreateList.css" />
+</head>
+<body>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img alt="Brand" src=""></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/user">Home</a></li>
+            <li><a href="/create">Create</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a id="btnLogOut" href="/end">LOG OUT</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+	<div class='container'>
+		<div class='row'>
+			<div class='col-xs-12'>
+				
+					<div class="maindiv">
+			            
+						<div id="header"></div>
+			           <div class='row'>
+			           		<div class='col-xs-4'>
+								<div class="menu">
+					                <button id="diagbutton" class="section"><img src="images/"/>Diagnostic</button><br>
+					                <button id="emailbutton" class="section"><img src="images/"/>Allergies</button><br>
+					                <button id="addressbutton" class="section"><img src="images/"/>Diet</button><br>
+					                <button id="checkboxbutton" class="section"><img src="images/"/>Checkbox</button><br>
+					                <button id="radioaddbutton" class="section"><img src="images/"/>Nursing</button>
+					                <button id='createnewbutton' class="section">Create New Section</button> </br>
+									<button id="reset" class="section">Reset</button>
+					            </div>
+			            	</div>
+			        	
+			            
+			           		<div class='col-xs-8'>
+								<div class="InputsWrapper1">
+					                <div id="yourhead">
+										<div id="your">
+											<h2 id="yourtitle">Checklist Title<img src="images/edit-form.png"/></h2>
+											<h4 id="justclickid"> Click on the buttons on the left to start building your checklist.</h4>
+										</div>
+									</div>	
+										<div id="InputsWrapper">
+											<button id="checkSubmit" class="btn btn-primary btn-md">Submit Checklist</button>
+										</div>
+					            </div>
+			        		</div>
+			    		</div>
+					</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
+<script type="text/javascript" src='newCreateList.js'></script>
+</body>
+</html>
