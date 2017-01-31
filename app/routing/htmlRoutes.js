@@ -10,13 +10,9 @@ var path = require('path');
 // Routes
 // =============================================================
 module.exports = function (app) {
-	var lunches = [{
-    lunch: "Beet & Goat Cheese Salad with minestrone soup."
-}, {
-    lunch: "Pizza, two double veggie burgers, fries with a big glup"
-}];
+
     app.get('/test', function (req, res) {
-       res.render("index", lunches[1]);
+       res.render("index");
     });
     app.get("/create", function (req, res) {
     res.sendFile(path.join(__dirname + "/../public/newCreateList.html"));

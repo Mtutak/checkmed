@@ -1,26 +1,32 @@
-<div class="maindiv">
-            
-			<div id="header"></div>
-            
-			<div class="menu">
-                <button id="namebutton"><img src="images/"/>Diagnosis</button><br>
-                <button id="emailbutton"><img src="images/"/>Allergies</button><br>
-                <button id="addressbutton"><img src="images/"/>Diet</button><br>
-                <button id="checkboxbutton"><img src="images/"/>Checkbox</button><br>
-                <button id="radioaddbutton"><img src="images/"/>Nursing</button>
-                <button id='createnewbutton'>Create New Section</button>
-				<button id="reset">Reset</button>
-            </div>
-            <h1>{{lunch}}</h1>
-			<div class="InputsWrapper1">
-                <div id="yourhead">
-					<div id="your">
-						<h2 id="yourtitle">Checklist Title<img src="images/edit-form.png"/></h2>
-						<h4 id="justclickid"> Click on the buttons on the left to start building your checklist.</h4>
-					</div>
-				</div>	
-					<div id="InputsWrapper">
-						<button id="checkSubmit" class="btn btn-primary btn-md">Submit Checklist</button>
-					</div>
-            </div>
-</div>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><img alt="Brand" src="">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/user">Home</a></li>
+            {{!-- <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li> --}}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/end">LOG OUT</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+  {{{content}}}
+
+ <footer class="footer">
+      <div class="container">
+        <p class="text-muted">Copyright CheckMed 2017</p>
+      </div>
+ </footer>
