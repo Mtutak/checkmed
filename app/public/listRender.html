@@ -117,19 +117,21 @@
 
 </footer>
 <script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
+<!-- <script src="assets/js/loguser.js"></script> -->
 <script>
 
      // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
-        authDomain: "checkmed-2b213.firebaseapp.com",
-        databaseURL: "https://checkmed-2b213.firebaseio.com",
-        storageBucket: "checkmed-2b213.appspot.com",
-        messagingSenderId: "843994433143"
-    };
-    firebase.initializeApp(config);
+var config = {
+    apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
+    authDomain: "checkmed-2b213.firebaseapp.com",
+    databaseURL: "https://checkmed-2b213.firebaseio.com",
+    storageBucket: "checkmed-2b213.appspot.com",
+    messagingSenderId: "843994433143"
+};
+
+ 
     var dataRef = firebase.database();
-    dataRef.ref('posts/-KbIpNWxYenT7HGHYwmh').on("value", function (snapshot) {
+    dataRef.ref('users/' + currentUser + '/user-posts/' + newPostKey).on("value", function (snapshot) {
         // If Firebase has a highPrice and highBidder stored (first case)
         // Set the initial variables for highBidder equal to the stored values.
         var role = snapshot.val().role;

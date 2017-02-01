@@ -48,6 +48,14 @@ body {
 .main {
     margin-top: 70px;
 }
+.itemholder{
+    text-align: center;
+    background-color: beige;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 10px 10px 5px #888888;
+    margin:10px;
+  }
 </style>
 </head>
 <body>
@@ -85,7 +93,7 @@ body {
             <img alt="" src="http://psmhospital.com/assets/images/doctors/doctor.jpg">
         </div>
         <div class="card-info"> 
-            <span class="card-title">Dr. Mark Schulwolf</span>
+            <span id="userData" class="card-title">Dr. Mark Schulwolf</span>
             <p>A Loyola hospitalist and division director of hospital medicine</p>
                     <p><b>Total Score:</b> 10,000</p>
                     <p><b>Checklists Created:</b> 10 </p>
@@ -114,7 +122,7 @@ body {
         <div class="well">
       <div class="tab-content">
         <div class="tab-pane fade in active" id="tab1">
-          <h3>This is tab 1</h3>
+         
         </div>
         <div class="tab-pane fade in" id="tab2">
           <h3>This is tab 2</h3>
@@ -133,7 +141,7 @@ body {
       </div>
     </footer>
             
-
+<script src="assets/js/loguser.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
 $(".btn-pref .btn").click(function () {
@@ -146,7 +154,46 @@ $('#btnLogOut').on('click', function () {
     firebase.auth().signOut();
 }); 
 });
+    dataRef.ref('posts/').on("value", function (snapshot) {
+        // If Firebase has a highPrice and highBidder stored (first case)
+        // Set the initial variables for highBidder equal to the stored values.
+        var list = snapshot.val();
+        var role = snapshot.val().role;
+        var exam = snapshot.val().exam;
+        var labs = snapshot.val().labs;
+        var title = snapshot.val().title;
+        var score = snapshot.val().score;
+        var use = snapshot.val().use; 
+        $.each(list, function (i, val){
+        $('#tab1').append('<div class="itemholder col-sm-4 "><button><h1 class="itemtitle">'+val.title+'</h1><h2 class="itemscore"> Score: '+val.score+'<h2></button></div>');
+          console.log(val.title); 
+          console.log('======='); 
+          console.log(val.score);
+        });
+        $.each(exam, function (i, val) {
+ $('#physical').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
+});
+        $.each(labs, function (i, val) {
+ $('#labs').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
+});
+        $.each(use, function (i,val) {
+ $('#listFor').append('<li>' + val + '</li>');
+});
+        $('#role').append(role);
+        $('#listTitle').append(title);
+
+        // Print the initial data to the console.
+        console.log(snapshot.val());
+        console.log(snapshot.val().exam);
+        console.log(snapshot.val().role);
+        console.log(snapshot.val().use);
+        console.log(snapshot.val().labs[0]);
+        // If any errors are experienced, log them to console.
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
 });
 </script>
+<script type="text/javascript" src="newCreateList.js"/>
 </body>
 </html>
