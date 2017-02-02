@@ -25,7 +25,7 @@ app.engine("handlebars", exphbs({
 app.set("view engine", "handlebars");
 // Routes
 // =============================================================
-require("./app/routing/htmlroutes.js")(app);
+require("./app/routing/htmlRoutes.js")(app);
 // Initiate the listener.
 app.listen(PORT, function () {
     console.log('App listening on Port ' + PORT);
