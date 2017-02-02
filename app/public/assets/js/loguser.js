@@ -1,6 +1,10 @@
 //Check JS link
 console.log("Connected to App Sign Up Form!");
-// LOGIN PAGE INTERACTION ========================
+// ====================================
+// 
+//  LOGIN PAGE INTERACTION
+// 
+// ======================================
 $('.form-signup').find('input, textarea').on('keyup blur focus', function (e) {
     var $this = $(this),
         label = $this.prev('label');
@@ -33,6 +37,11 @@ $('.tab a').on('click', function (e) {
     $(target).fadeIn(600);
 });
 // Initialize Firebase
+// ====================================
+// 
+//  FIREBASE
+// 
+// ======================================
 var config = {
     apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
     authDomain: "checkmed-2b213.firebaseapp.com",
@@ -49,13 +58,21 @@ var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
 var currentUser = '';
 //Set up Signing in Auth Firebase Authentication=============
-//Login
+// ====================================
+// 
+//  LOGIN BUTTON
+// 
+// ======================================
+// $('#btnLogin').on('click', handleLogin);
+// function handleLogin(e) {
+//     e.preventDefault();
+// }
 $('#btnLogin').on('click', function () {
     //Store Input in Variables
     email = $('#emailBack').val().trim();
     password = $('#passwordBack').val().trim();
     //Sign in Active User
-    var loginPromise = firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+    var loginPromise = firebase.auth().signInWithEmailAndPassword(email, password).then(submitPost).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -65,16 +82,22 @@ $('#btnLogin').on('click', function () {
         }
         console.log(error);
     });
+    console.log(loginPromise);
     return false;
 });
 //Creating an Account 
+// ====================================
+// 
+//  SIGN UP BUTTON
+// 
+// ======================================
 $('#btnSignUp').on('click', function () {
     //Store Input in Variables
     email = $('#txtEmail').val().trim();
     password = $('#txtPassword').val().trim();
     displayName = $('#displayName').val().trim();
     console.log(displayName);
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(submitPost).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -88,6 +111,11 @@ $('#btnSignUp').on('click', function () {
     });
     return false;
 });
+
+function submitPost() {
+    window.location.href = '/user';
+    console.log('Success!')
+}
 //User Sign Out =================
 $('#btnLogOut').on('click', function () {
     $('.well').remove();
@@ -108,11 +136,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log(currentUser);
         console.log("Email: " + user.email);
         //Could Turn All DOM Updates to Function
-        $('main').removeClass('hide');
         $('#btnLogOut').removeClass('hide');
-        $('.search_bar').removeClass('hide');
-        $('#loginForm').addClass('hide');
-        $('#user-container').removeClass('hide');
         //Adds User Auth Data to Firebase Database
         // dataRef.ref('users/' + user.uid + '/profile').set({
         //     displayName: user.displayName
@@ -122,12 +146,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log('not logged in');
         // Set currentUID to null.
         currentUser = null;
-        $('main').addClass('hide');
         $('#btnLogOut').addClass('hide');
-        $('.search_bar').addClass('hide');
-        $('#loginForm').removeClass('hide');
-        $('.form-signup').removeClass('hide');
-        $('#user-container').addClass('hide');
     }
     // LOG USER INPUTS
     $('#mainsearch').on('click', function () {
