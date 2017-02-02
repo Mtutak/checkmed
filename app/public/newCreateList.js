@@ -170,11 +170,6 @@ $(document).ready(function () {
                 itemArray(examArray, eachItem);
                 count++;
             });
-            $('.itemAllergies').each(function () {
-                var eachItem = $(this).val().trim();
-                itemArray(allergyArray, eachItem);
-                count++;
-            });
             $('.itemProcedures').each(function () {
                 var eachItem = $(this).val().trim();
                 itemArray(procArray, eachItem);

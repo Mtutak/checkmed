@@ -1,4 +1,7 @@
-
+#brand {
+    max-width: 45px;
+    margin-top: -10px;
+}
 /* USER PROFILE PAGE */
  .card {
     margin-top: 20px;
@@ -66,3 +69,46 @@
     -webkit-border-radius:0 !important;
 }
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+.foot {
+    margin-top: 20px;
+}
+
+.main {
+    margin-top: 70px;
+}
+.itemholder{
+    text-align: center;
+    background-color: beige;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 10px 10px 5px #888888;
+    margin:10px;
+  }
+.likeButton {
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
+}

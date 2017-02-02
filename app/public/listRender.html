@@ -118,49 +118,6 @@
 </footer>
 <script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
 <!-- <script src="assets/js/loguser.js"></script> -->
-<script>
 
-     // Initialize Firebase
-var config = {
-    apiKey: "AIzaSyBS6q1-rBjsJ2bjpNHRY_Bpju6lu0s4_yc",
-    authDomain: "checkmed-2b213.firebaseapp.com",
-    databaseURL: "https://checkmed-2b213.firebaseio.com",
-    storageBucket: "checkmed-2b213.appspot.com",
-    messagingSenderId: "843994433143"
-};
-
- 
-    var dataRef = firebase.database();
-    dataRef.ref('users/' + currentUser + '/user-posts/' + newPostKey).on("value", function (snapshot) {
-        // If Firebase has a highPrice and highBidder stored (first case)
-        // Set the initial variables for highBidder equal to the stored values.
-        var role = snapshot.val().role;
-        var exam = snapshot.val().exam;
-        var labs = snapshot.val().labs;
-        var title = snapshot.val().title;
-        var use = snapshot.val().use; 
-        $.each(exam, function (i, val) {
- $('#physical').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
-});
-        $.each(labs, function (i, val) {
- $('#labs').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
-});
-        $.each(use, function (i,val) {
- $('#listFor').append('<li>' + val + '</li>');
-});
-        $('#role').append(role);
-        $('#listTitle').append(title);
-
-        // Print the initial data to the console.
-        console.log(snapshot.val());
-        console.log(snapshot.val().exam);
-        console.log(snapshot.val().role);
-        console.log(snapshot.val().use);
-        console.log(snapshot.val().labs[0]);
-        // If any errors are experienced, log them to console.
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-    });
-</script>
 </body>
 </html>
