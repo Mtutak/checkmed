@@ -1,4 +1,34 @@
-<!-- Fixed navbar -->
+<html lang="en">
+<head>
+  <title>CheckMed</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ <style type="text/css">
+  /* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+</style>
+</head>
+<body>
+		<!-- Fixed navbar -->
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
         <div class="navbar-header">
@@ -13,8 +43,6 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/user">Home</a></li>
-            {{!-- <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li> --}}
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/end">LOG OUT</a></li>
@@ -23,8 +51,7 @@
     </div>
 </nav>
 <br>
-<div class="container-fluid text-center">
-  <p></p>  
+<div class="container-fluid text-center"> 
   <div id="navbar">
     <a href='#' role="button" class="btn btn-primary .btn-lg">Save To PDF</a>
     <a href='#' role="button" class="btn btn-primary .btn-lg">Edit Checklist</a>
@@ -34,29 +61,21 @@
 <br>
 
   <div class="jumbotron">
-  <div class="container text-center">
-    <h1 id='listTitle'></h1>      
-    <p>Checklist Points: <span id='points'></span></p>
-  </div>
+    <div class="container text-center">
+      <h1 id='listTitle'></h1>      
+      <p>Checklist Points: <span id='points'></span></p>
+    </div>
 </div>
-{{#each listSection}}
 <div class="container-fluid">    
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2"> 
-      <div class="panel panel-danger">
-        <div class="panel-heading symp keySection">{{this.title}} </div>
-        <h1>{{this.score}}</h1>
-          <div class="panel-body">
-            <ul id='listitems'>
-              {{!-- {{#each this.}}
-              <li class='checkitem'>{{this.check}}
-                {{/each}} --}}
-            </ul>
-          </div>
+      <div class="panel">
+        <div class="panel-heading symp keySection">
+         </div>
       </div>
     </div>
   </div>
-   {{/each}}
+</div>
 
 
 <footer>
@@ -64,3 +83,7 @@
         <p class="text-muted">Copyright CheckMed 2017</p>
       </div>
  </footer>
+<script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
+<script src="assets/js/loguser.js"></script>
+</body>
+</html>

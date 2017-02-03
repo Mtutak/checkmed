@@ -26,7 +26,7 @@
 <body>
 <!-- Fixed navbar -->
 <nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
+  <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -48,11 +48,11 @@
     </div>
 </nav>
 
-<div class="container main">
+<div class="container-fluid main">
     <div class="row">
 
 
-    <div class="col-lg-10 col-lg-offset-1">
+    <div class="col-lg-10 col-lg-offset-1 col-xs-12">
     <div class="card hovercard">
         <div class="useravatar">
             <img alt="" src="http://psmhospital.com/assets/images/doctors/doctor.jpg">
@@ -69,7 +69,7 @@
     
     <div class="btn-pref btn-group btn-group-justified btn-group-lg" role="group" aria-label="...">
         <div class="btn-group" role="group">
-            <button type="button" id="stars" class="btn btn-primary" href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <button type="button" id="user" class="btn btn-primary" data-toggle="tab"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 <div class="hidden-xs">User Lists</div>
             </button>
         </div>
@@ -79,20 +79,43 @@
             </button>
         </div>
         <div class="btn-group" role="group">
-            <button type="button" id="createLink" class="btn btn-default"  data-toggle="tab" href="/create"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            <button type="button" id="createLink" class="btn btn-default"  data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               <div class="hidden-xs">Create A List</div>
             </button>
         </div>
     </div>
    
 
-        <div class="well col-sm-12">
+        <div class="well col-xs-12">
       <div class="tab-content">
         <div class="tab-pane fade in active" id="tab1">
          
         </div>
-        <div class="tab-pane fade in" id="tab2">
-          <h3>This is tab 2</h3>
+        <div class="hidden tab-pane fade in" id="tab2">
+              <div class="container-fluid text-center"> 
+                <div id="navbar">
+                  <a href='#' role="button" class="btn btn-primary .btn-lg">Save To PDF</a>
+                  <a href='#' role="button" class="btn btn-primary .btn-lg">Edit Checklist</a>
+                </div>
+              </div>
+              <br>
+
+                <div class="jumbotron">
+                  <div class="container text-center">
+                    <h1 id='listTitle'></h1>      
+                    <p>Checklist Points: <span id='points'></span></p>
+                  </div>
+              </div>
+              <div class="container-fluid">    
+                <div class="row">
+                  <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2"> 
+                    <div class="panel">
+                      <div class="panel-heading symp keySection">
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
         <div class="tab-pane fade in" id="tab3">
           <h3>This is tab 3</h3>

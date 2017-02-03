@@ -1,5 +1,7 @@
 //Check JS link
 console.log("Connected to App Sign Up Form!");
+var selectedChecklist;
+var key;
 // ====================================
 // 
 //  LOGIN PAGE INTERACTION
@@ -114,7 +116,7 @@ $('#btnSignUp').on('click', function () {
 
 function submitPost() {
     window.location.href = '/user';
-    console.log('Success!')
+    console.log('Success!');
 }
 //User Sign Out =================
 $('#btnLogOut').on('click', function () {
@@ -156,18 +158,9 @@ firebase.auth().onAuthStateChanged(function (user) {
             search: searchTerm,
             searchtype: searchCriteria
         });
-        searchToDom();
         return false;
     });
 });
-
-function searchToDom() {
-    dataRef.ref('users/' + currentUser + '/searches').on("value", function (childSnapshot) {
-        $(".searchupdate").append("<tr class='dynamicSearch'><td class='searchtype'>" + childSnapshot.val().searchtype + "</td><td class='searchPhrase'> " + childSnapshot.val().search + "</td></tr>");
-    }, function (errorObject) {
-        console.log("Errors handled: " + errorObject.code);
-    });
-}
 // Bind Provider Sign in buttons.
 $('#sign-in-button').on('click', function () {
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -189,57 +182,68 @@ $('#btnLogOut').on('click', function () {
 });
 //Button Links
 $('#createLink').on('click', function (e) {
-    e.preventDefault();
-    $.get("/create");
+    window.location.href = '/create';
 });
 dataRef.ref('posts/').on("value", function (snapshot) {
     // If Firebase has a highPrice and highBidder stored (first case)
     // Set the initial variables for highBidder equal to the stored values.
     var list = snapshot.val();
-    var role = snapshot.val().role;
-    var exam = snapshot.val().exam;
-    var labs = snapshot.val().labs;
     var title = snapshot.val().title;
     var score = snapshot.val().score;
-    var use = snapshot.val().use;
     var snapKeys = Object.keys(list);
     console.log(snapKeys);
     $.each(list, function (i, val) {
-        $('#tab1').append('<div class="itemholder col-sm-4 likeButton"><a href="/new_list"><h1 data-key="' + i + '" class="itemtitle">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
+        $('#tab1').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
         console.log(i);
         // console.log(snapKeys[i]);
         console.log(val.title);
         console.log('=======');
         console.log(val.score);
     });
-    $.each(exam, function (i, val) {
-        $('#physical').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
-    });
-    $.each(labs, function (i, val) {
-        $('#labs').append('<li><label><input type="checkbox" value="">' + val + '</label></li>');
-    });
-    $.each(use, function (i, val) {
-        $('#listFor').append('<li>' + val + '</li>');
-    });
-    $('#role').append(role);
-    $('#listTitle').append(title);
-    // Print the initial data to the console.
-    console.log(snapshot.val());
-    console.log(snapshot.val().exam);
-    console.log(snapshot.val().role);
-    console.log(snapshot.val().use);
-    console.log(snapshot.val().labs[0]);
-    // If any errors are experienced, log them to console.
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
-$(".likeButton").on("click", function (e) {
-    var key = $(this).attr('data');
+$("#tab1").on("click", "h1.fbValue", function (e) {
+    console.log('clicked button to search for checklist!');
+    $("#tab1").hide("slow");
+    $("#tab2").removeClass("hidden");
+    $("#tab2").show("slow");
+    // href="/new_list"
+    key = $(this).data('key');
+    console.log(key);
+    fbListCall(key);
+});
+
+function fbListCall(key) {
+    console.log("call");
     dataRef.ref('posts/' + key).on("value", function (snapshot) {
-        console.log(snapshot);
+        selectedChecklist = snapshot.val();
+        renderList(selectedChecklist);
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
     });
+}
+
+function renderList(listObject) {
+    console.log(listObject);
+    // var data = JSON.stringify(listObject);
+    // $.post("/new_list", data).done(function () {
+    //     console.log('success post');
+    // });
+    $('#listTitle').append(listObject.title);
+    $('#points').append(listObject.score);
+    $.each(listObject, function (i, val) {
+        if (i === "title" || i === "score") {} else {
+            $(".keySection").append("<div class='section'><h1>" + i + "</h1><ul><li>" + val + "</li></ul></div>");
+        }
+    });
+}
+$("#user").on("click", function (e) {
+    e.preventDefault();
+    $("#tab2").hide("slow");
+    $("#tab1").removeClass("hidden");
+    $("#tab1").show("slow");
+    return false;
 });
 // ====================================
 // 

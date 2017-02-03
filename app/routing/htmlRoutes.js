@@ -11,6 +11,7 @@ module.exports = function (app) {
         res.render("index");
     });
     app.get("/create", function (req, res) {
+        console.log(req.param)
         res.sendFile(path.join(__dirname + "/../public/newCreateList.html"));
         console.log(__dirname);
     });
@@ -19,12 +20,21 @@ module.exports = function (app) {
         console.log(__dirname);
     });
     app.get("/new_list", function (req, res) {
-        res.sendFile(path.join(__dirname + "/../public/listRender.html"));
-        console.log(__dirname);
+        console.log('get new list');
+        res.sendFile(path.join(__dirname + "/../public/listRenderMAIN.html"));
+        // console.log(__dirname);
     });
     // Default to login
     app.use(function (req, res) {
         res.sendFile(path.join(__dirname + '/../public/welcome.html'));
+    });
+    app.post("/new_list", function (req, res) {
+        console.log("reques body below:");
+        console.log(req.body);
+        var data = req.body;
+        res.render("index", {
+            listSection: data
+        });
     });
     app.post("/user", function (req, res) {
         res.sendFile(path.join(__dirname + "/../public/profile.html"));
