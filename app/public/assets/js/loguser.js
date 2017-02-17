@@ -185,8 +185,6 @@ $('#createLink').on('click', function (e) {
     window.location.href = '/create';
 });
 dataRef.ref('posts/').on("value", function (snapshot) {
-    // If Firebase has a highPrice and highBidder stored (first case)
-    // Set the initial variables for highBidder equal to the stored values.
     var list = snapshot.val();
     var title = snapshot.val().title;
     var score = snapshot.val().score;
@@ -230,17 +228,24 @@ function renderList(listObject) {
     // $.post("/new_list", data).done(function () {
     //     console.log('success post');
     // });
-    $('#listTitle').append(listObject.title);
-    $('#points').append(listObject.score);
-    $.each(listObject, function (i, val) {
-        if (i === "title" || i === "score") {} else {
-            $(".keySection").append("<div class='section'><h1>" + i + "</h1><ul><li>" + val + "</li></ul></div>");
+    $('#listTitle').html("<div>" + listObject.title + "</div>");
+    $('#points').html("<div>" + listObject.score + "</div>");
+    $.each(listObject, function (keyname, val) {
+        if (keyname === "title" || keyname === "score") {} else {
+            var arrayCheck = val;
+            // for (i=0; i< arrayCheck.length; i++)
+            $(".keySection").append("<div class='titlesection'><h1>" + keyname + "</h1><ul class='eachCheck'></ul></div>");
+            for (i = 0; i < arrayCheck.length; i++) {
+                $(".eachCheck").append("<li class='eachListCheck'><input type='checkbox'>" + arrayCheck[i] + "</input></li>");
+            }
         }
     });
 }
 $("#user").on("click", function (e) {
     e.preventDefault();
     $("#tab2").hide("slow");
+    $(".titlesection").remove();
+    $(".eachListCheck").remove();
     $("#tab1").removeClass("hidden");
     $("#tab1").show("slow");
     return false;
