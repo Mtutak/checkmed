@@ -112,3 +112,16 @@ body {
   border-bottom: 1px solid #333333;
   border-left: 1px solid #CCCCCC;
 }
+
+/*Check list render on click*/
+.eachCheck {
+  list-style-type:none;
+}
+.eachListCheck {
+  font-size: 20px;
+  padding: 2px 6px 2px 6px;
+
+}
+.eachListCheck > input {
+  margin:10px 10px 10px 10px;
+}
