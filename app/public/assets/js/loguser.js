@@ -55,7 +55,7 @@ firebase.initializeApp(config);
 // Initial Global Values
 var email = '';
 var password = '';
-var displayName = '';
+var displayName;
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
 var currentUser = '';
@@ -139,10 +139,10 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log("Email: " + user.email);
         //Could Turn All DOM Updates to Function
         $('#btnLogOut').removeClass('hide');
-        //Adds User Auth Data to Firebase Database
-        // dataRef.ref('users/' + user.uid + '/profile').set({
-        //     displayName: user.displayName
-        // });
+        //Adds User Data to Firebase Database
+        dataRef.ref('users/' + user.uid + '/').set({
+            displayName: displayName
+        });
     } else {
         // No user is signed in.
         console.log('not logged in');
@@ -150,16 +150,6 @@ firebase.auth().onAuthStateChanged(function (user) {
         currentUser = null;
         $('#btnLogOut').addClass('hide');
     }
-    // LOG USER INPUTS
-    $('#mainsearch').on('click', function () {
-        searchTerm = $('.searchinput').val().trim();
-        searchCriteria = $("#myDropdown option:selected").text();
-        dataRef.ref('users/' + user.uid + '/searches').set({
-            search: searchTerm,
-            searchtype: searchCriteria
-        });
-        return false;
-    });
 });
 // Bind Provider Sign in buttons.
 $('#sign-in-button').on('click', function () {
@@ -255,8 +245,6 @@ $("#user").on("click", function (e) {
 // FROM NEWCREATELIST.JS
 // 
 // ======================================
-var currentUser = '';
-var email = '';
 $(document).ready(function () {
     //User Sign Out =================
     $('#btnLogOut').on('click', function () {
@@ -463,8 +451,7 @@ $(document).ready(function () {
                 consultation: consultArray,
                 education: educArray,
                 diagnosis: diagArray,
-                score: count,
-                id: newPostKey
+                score: count
             };
             console.log(userChecklist);
         }
