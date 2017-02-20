@@ -58,7 +58,7 @@ var password = '';
 var displayName;
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
-var currentUser = '';
+var currentUser;
 //Set up Signing in Auth Firebase Authentication=============
 // ====================================
 // 
@@ -70,6 +70,7 @@ var currentUser = '';
 //     e.preventDefault();
 // }
 $('#btnLogin').on('click', function () {
+    $('.loading').html('<img class="loadingGif" src="assets/img/load.gif" alt="loading...">');
     //Store Input in Variables
     email = $('#emailBack').val().trim();
     password = $('#passwordBack').val().trim();
@@ -94,6 +95,7 @@ $('#btnLogin').on('click', function () {
 // 
 // ======================================
 $('#btnSignUp').on('click', function () {
+    $('.loading').html('<img class="loadingGif" src="assets/img/load.gif" alt="loading...">');
     //Store Input in Variables
     email = $('#txtEmail').val().trim();
     password = $('#txtPassword').val().trim();
@@ -110,6 +112,13 @@ $('#btnSignUp').on('click', function () {
             alert(errorMessage);
         }
         console.log(error);
+        if (user) {
+            //Adds User Data to Firebase Database
+            dataRef.ref('users/' + user.uid + '/').set({
+                displayName: displayName
+            });
+            $('.loadingGif').remove();
+        }
     });
     return false;
 });
@@ -139,9 +148,38 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log("Email: " + user.email);
         //Could Turn All DOM Updates to Function
         $('#btnLogOut').removeClass('hide');
-        //Adds User Data to Firebase Database
-        dataRef.ref('users/' + user.uid + '/').set({
-            displayName: displayName
+        //Render User Profile Data to screen
+        dataRef.ref('users/' + currentUser + '/displayName').on("value", function (snapshot) {
+            var userName = snapshot.val();
+            console.log(userName);
+            $('.userName').html('<span id="userData" class="card-title userName">' + userName + '</span>');
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+        //default to current users list add on click
+        dataRef.ref('users/' + currentUser + '/user-posts').on('value', function (snapshot) {
+            console.log('user value....');
+            console.log(currentUser);
+            console.log(snapshot.val());
+            if (snapshot.val()) {
+                var list = snapshot.val();
+                var title = snapshot.val().title;
+                var score = snapshot.val().score;
+                var snapKeys = Object.keys(list);
+                console.log(snapKeys);
+                $.each(list, function (i, val) {
+                    $('#tab1').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
+                    console.log(i);
+                    // console.log(snapKeys[i]);
+                    console.log(val.title);
+                    console.log('=======');
+                    console.log(val.score);
+                });
+            } else {
+                $('#tab1').append('<h1>Create a Checklist To See Your Results!</h1>');
+            }
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
         });
     } else {
         // No user is signed in.
@@ -170,18 +208,56 @@ $(".btn-pref .btn").click(function () {
 $('#btnLogOut').on('click', function () {
     firebase.auth().signOut();
 });
+//Display User ABOUT SECTION ---------------------
+$('div.card.hovercard').on('click', '#aboutUser', function (e) {
+    e.preventDefault();
+    $('#aboutForm').removeClass('hidden');
+    $('#aboutUser').addClass('hidden');
+    $('div.card.hovercard').on('click', '#addToAbout', function () {
+        var userAboutSection = $('#about').val().trim();
+        //add to Firebase User Profile
+        dataRef.ref('users/' + currentUser).update({
+            about: userAboutSection
+        });
+        dataRef.ref('users/' + currentUser + '/about').on('value', function (snapshot) {
+            var userAbout = snapshot.val();
+            console.log(userAbout);
+            $('#aboutForm').addClass('hidden');
+            $('#aboutUser').removeClass('hidden');
+            //update dom with content
+            $('#updatedAbout').html('<span class="newAbout">' + userAbout + '</span>');
+        }, function (errorObject) {
+            console.log(errorObject.code);
+            //update dom with Update Your About Me Section!
+            $('#userDescription').html('<span> Update Your About Me</span>');
+        });
+    });
+    return false;
+});
 //Button Links
 $('#createLink').on('click', function (e) {
     window.location.href = '/create';
 });
-dataRef.ref('posts/').on("value", function (snapshot) {
+$("#tab1").on("click", "h1.fbValue", function (e) {
+    console.log('clicked button to search for checklist!');
+    $("#tab1").hide("slow");
+    $("#tab2").removeClass("hidden");
+    $("#tab2").show("slow");
+    // href="/new_list"
+    key = $(this).data('key');
+    console.log(key);
+    fbListCall(key);
+});
+//capture data for all posts to render on button click
+dataRef.ref('/posts').on('value', function (snapshot) {
+    console.log("checking for all post list values");
     var list = snapshot.val();
     var title = snapshot.val().title;
     var score = snapshot.val().score;
     var snapKeys = Object.keys(list);
     console.log(snapKeys);
     $.each(list, function (i, val) {
-        $('#tab1').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
+        $('#allposts').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
         console.log(i);
         // console.log(snapKeys[i]);
         console.log(val.title);
@@ -189,11 +265,32 @@ dataRef.ref('posts/').on("value", function (snapshot) {
         console.log(val.score);
     });
 }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
+    console.log(errorObject.code);
 });
-$("#tab1").on("click", "h1.fbValue", function (e) {
-    console.log('clicked button to search for checklist!');
+//on click of trending list pull from all posts
+$('.btn-pref').on('click', '#favorites', function (e) {
+    e.preventDefault();
+    console.log('clicked all posts');
     $("#tab1").hide("slow");
+    $("#tab1").addClass("hidden");
+    $("#tab2").hide("slow");
+    $("#tab3").removeClass("hidden");
+    $("#tab3").show("slow");
+    return false;
+});
+$('.btn-pref').on('click', '#user', function (e) {
+    e.preventDefault();
+    $("#tab3").hide("slow");
+    $("#tab3").addClass("hidden");
+    $("#tab2").hide("slow");
+    $("#tab2").addClass("hidden");
+    $("#tab1").removeClass("hidden");
+    $("#tab1").show("slow");
+    return false;
+});
+$("#tab3").on("click", "h1.fbValue", function (e) {
+    console.log('clicked button to search for checklist!');
+    $("#tab3").hide("slow");
     $("#tab2").removeClass("hidden");
     $("#tab2").show("slow");
     // href="/new_list"
@@ -320,8 +417,14 @@ $(document).ready(function () {
     });
     //listens on input wrapper for remove class
     $(InputsWrapper).on("click", ".removeclass0", function () { //to remove name field
-        $(this).parent('div').remove();
         x--;
+        // var hasSibling = $(this).siblings('h1');
+        // console.log("Siblings");
+        // console.log(hasSibling);
+        // if (hasSibling.length === 0) {
+        //     $(this).parent('div').parent('div').parent('div').remove();
+        // }
+        $(this).parent('div').remove();
         return false;
     });
     $(InputsWrapper).on("click", ".addclass0", function () { //to add more name fields 
@@ -459,6 +562,11 @@ $(document).ready(function () {
         updates['/posts/' + newPostKey] = userChecklist;
         updates['users/' + currentUser + '/user-posts/' + newPostKey] = userChecklist;
         firebase.database().ref().update(updates);
+        //look into transactions to increment
+        // dataRef.ref('users/' + currentUser).update({
+        //     totalscore: count++,
+        //     totalLists: list++
+        // });
         return false;
     });
 });
