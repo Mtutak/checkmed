@@ -55,10 +55,10 @@ firebase.initializeApp(config);
 // Initial Global Values
 var email = '';
 var password = '';
-var displayName = '';
+var displayName;
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
-var currentUser = '';
+var currentUser;
 //Set up Signing in Auth Firebase Authentication=============
 // ====================================
 // 
@@ -70,6 +70,7 @@ var currentUser = '';
 //     e.preventDefault();
 // }
 $('#btnLogin').on('click', function () {
+    $('.loading').html('<img class="loadingGif" src="assets/img/load.gif" alt="loading...">');
     //Store Input in Variables
     email = $('#emailBack').val().trim();
     password = $('#passwordBack').val().trim();
@@ -94,6 +95,7 @@ $('#btnLogin').on('click', function () {
 // 
 // ======================================
 $('#btnSignUp').on('click', function () {
+    $('.loading').html('<img class="loadingGif" src="assets/img/load.gif" alt="loading...">');
     //Store Input in Variables
     email = $('#txtEmail').val().trim();
     password = $('#txtPassword').val().trim();
@@ -110,6 +112,13 @@ $('#btnSignUp').on('click', function () {
             alert(errorMessage);
         }
         console.log(error);
+        if (user) {
+            //Adds User Data to Firebase Database
+            dataRef.ref('users/' + user.uid + '/').set({
+                displayName: displayName
+            });
+            $('.loadingGif').remove();
+        }
     });
     return false;
 });
@@ -139,10 +148,39 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log("Email: " + user.email);
         //Could Turn All DOM Updates to Function
         $('#btnLogOut').removeClass('hide');
-        //Adds User Auth Data to Firebase Database
-        // dataRef.ref('users/' + user.uid + '/profile').set({
-        //     displayName: user.displayName
-        // });
+        //Render User Profile Data to screen
+        dataRef.ref('users/' + currentUser + '/displayName').on("value", function (snapshot) {
+            var userName = snapshot.val();
+            console.log(userName);
+            $('.userName').html('<span id="userData" class="card-title userName">' + userName + '</span>');
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
+        //default to current users list add on click
+        dataRef.ref('users/' + currentUser + '/user-posts').on('value', function (snapshot) {
+            console.log('user value....');
+            console.log(currentUser);
+            console.log(snapshot.val());
+            if (snapshot.val()) {
+                var list = snapshot.val();
+                var title = snapshot.val().title;
+                var score = snapshot.val().score;
+                var snapKeys = Object.keys(list);
+                console.log(snapKeys);
+                $.each(list, function (i, val) {
+                    $('#tab1').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
+                    console.log(i);
+                    // console.log(snapKeys[i]);
+                    console.log(val.title);
+                    console.log('=======');
+                    console.log(val.score);
+                });
+            } else {
+                $('#tab1').append('<h1>Create a Checklist To See Your Results!</h1>');
+            }
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
     } else {
         // No user is signed in.
         console.log('not logged in');
@@ -150,16 +188,6 @@ firebase.auth().onAuthStateChanged(function (user) {
         currentUser = null;
         $('#btnLogOut').addClass('hide');
     }
-    // LOG USER INPUTS
-    $('#mainsearch').on('click', function () {
-        searchTerm = $('.searchinput').val().trim();
-        searchCriteria = $("#myDropdown option:selected").text();
-        dataRef.ref('users/' + user.uid + '/searches').set({
-            search: searchTerm,
-            searchtype: searchCriteria
-        });
-        return false;
-    });
 });
 // Bind Provider Sign in buttons.
 $('#sign-in-button').on('click', function () {
@@ -180,20 +208,56 @@ $(".btn-pref .btn").click(function () {
 $('#btnLogOut').on('click', function () {
     firebase.auth().signOut();
 });
+//Display User ABOUT SECTION ---------------------
+$('div.card.hovercard').on('click', '#aboutUser', function (e) {
+    e.preventDefault();
+    $('#aboutForm').removeClass('hidden');
+    $('#aboutUser').addClass('hidden');
+    $('div.card.hovercard').on('click', '#addToAbout', function () {
+        var userAboutSection = $('#about').val().trim();
+        //add to Firebase User Profile
+        dataRef.ref('users/' + currentUser).update({
+            about: userAboutSection
+        });
+        dataRef.ref('users/' + currentUser + '/about').on('value', function (snapshot) {
+            var userAbout = snapshot.val();
+            console.log(userAbout);
+            $('#aboutForm').addClass('hidden');
+            $('#aboutUser').removeClass('hidden');
+            //update dom with content
+            $('#updatedAbout').html('<span class="newAbout">' + userAbout + '</span>');
+        }, function (errorObject) {
+            console.log(errorObject.code);
+            //update dom with Update Your About Me Section!
+            $('#userDescription').html('<span> Update Your About Me</span>');
+        });
+    });
+    return false;
+});
 //Button Links
 $('#createLink').on('click', function (e) {
     window.location.href = '/create';
 });
-dataRef.ref('posts/').on("value", function (snapshot) {
-    // If Firebase has a highPrice and highBidder stored (first case)
-    // Set the initial variables for highBidder equal to the stored values.
+$("#tab1").on("click", "h1.fbValue", function (e) {
+    console.log('clicked button to search for checklist!');
+    $("#tab1").hide("slow");
+    $("#tab2").removeClass("hidden");
+    $("#tab2").show("slow");
+    // href="/new_list"
+    key = $(this).data('key');
+    console.log(key);
+    fbListCall(key);
+});
+//capture data for all posts to render on button click
+dataRef.ref('/posts').on('value', function (snapshot) {
+    console.log("checking for all post list values");
     var list = snapshot.val();
     var title = snapshot.val().title;
     var score = snapshot.val().score;
     var snapKeys = Object.keys(list);
     console.log(snapKeys);
     $.each(list, function (i, val) {
-        $('#tab1').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
+        $('#allposts').append('<div class="itemholder col-sm-4 likeButton"><a ><h1 data-key="' + i + '" class="itemtitle fbValue">' + val.title + '</a><h2 class="itemscore"> Score: ' + val.score + '<h2></button></div>');
         console.log(i);
         // console.log(snapKeys[i]);
         console.log(val.title);
@@ -201,11 +265,32 @@ dataRef.ref('posts/').on("value", function (snapshot) {
         console.log(val.score);
     });
 }, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
+    console.log(errorObject.code);
 });
-$("#tab1").on("click", "h1.fbValue", function (e) {
-    console.log('clicked button to search for checklist!');
+//on click of trending list pull from all posts
+$('.btn-pref').on('click', '#favorites', function (e) {
+    e.preventDefault();
+    console.log('clicked all posts');
     $("#tab1").hide("slow");
+    $("#tab1").addClass("hidden");
+    $("#tab2").hide("slow");
+    $("#tab3").removeClass("hidden");
+    $("#tab3").show("slow");
+    return false;
+});
+$('.btn-pref').on('click', '#user', function (e) {
+    e.preventDefault();
+    $("#tab3").hide("slow");
+    $("#tab3").addClass("hidden");
+    $("#tab2").hide("slow");
+    $("#tab2").addClass("hidden");
+    $("#tab1").removeClass("hidden");
+    $("#tab1").show("slow");
+    return false;
+});
+$("#tab3").on("click", "h1.fbValue", function (e) {
+    console.log('clicked button to search for checklist!');
+    $("#tab3").hide("slow");
     $("#tab2").removeClass("hidden");
     $("#tab2").show("slow");
     // href="/new_list"
@@ -230,17 +315,24 @@ function renderList(listObject) {
     // $.post("/new_list", data).done(function () {
     //     console.log('success post');
     // });
-    $('#listTitle').append(listObject.title);
-    $('#points').append(listObject.score);
-    $.each(listObject, function (i, val) {
-        if (i === "title" || i === "score") {} else {
-            $(".keySection").append("<div class='section'><h1>" + i + "</h1><ul><li>" + val + "</li></ul></div>");
+    $('#listTitle').html("<div>" + listObject.title + "</div>");
+    $('#points').html("<div>" + listObject.score + "</div>");
+    $.each(listObject, function (keyname, val) {
+        if (keyname === "title" || keyname === "score") {} else {
+            var arrayCheck = val;
+            // for (i=0; i< arrayCheck.length; i++)
+            $(".keySection").append("<div class='titlesection'><h1>" + keyname + "</h1><ul class='eachCheck'></ul></div>");
+            for (i = 0; i < arrayCheck.length; i++) {
+                $(".eachCheck").append("<li class='eachListCheck'><input type='checkbox'>" + arrayCheck[i] + "</input></li>");
+            }
         }
     });
 }
 $("#user").on("click", function (e) {
     e.preventDefault();
     $("#tab2").hide("slow");
+    $(".titlesection").remove();
+    $(".eachListCheck").remove();
     $("#tab1").removeClass("hidden");
     $("#tab1").show("slow");
     return false;
@@ -250,8 +342,6 @@ $("#user").on("click", function (e) {
 // FROM NEWCREATELIST.JS
 // 
 // ======================================
-var currentUser = '';
-var email = '';
 $(document).ready(function () {
     //User Sign Out =================
     $('#btnLogOut').on('click', function () {
@@ -327,8 +417,14 @@ $(document).ready(function () {
     });
     //listens on input wrapper for remove class
     $(InputsWrapper).on("click", ".removeclass0", function () { //to remove name field
-        $(this).parent('div').remove();
         x--;
+        // var hasSibling = $(this).siblings('h1');
+        // console.log("Siblings");
+        // console.log(hasSibling);
+        // if (hasSibling.length === 0) {
+        //     $(this).parent('div').parent('div').parent('div').remove();
+        // }
+        $(this).parent('div').remove();
         return false;
     });
     $(InputsWrapper).on("click", ".addclass0", function () { //to add more name fields 
@@ -368,6 +464,7 @@ $(document).ready(function () {
     //
     $('#checkSubmit').on('click', function (e) {
         e.preventDefault();
+        $('.loading').html('<img class="loadingGif" src="assets/img/load.gif" alt="loading...">');
         var count = 1;
         var title = '';
         var sympArray = [];
@@ -458,15 +555,21 @@ $(document).ready(function () {
                 consultation: consultArray,
                 education: educArray,
                 diagnosis: diagArray,
-                score: count,
-                id: newPostKey
+                score: count
             };
             console.log(userChecklist);
+            $('.loadingGif').remove();
         }
         var updates = {};
         updates['/posts/' + newPostKey] = userChecklist;
         updates['users/' + currentUser + '/user-posts/' + newPostKey] = userChecklist;
         firebase.database().ref().update(updates);
+        //look into transactions to increment
+        // dataRef.ref('users/' + currentUser).update({
+        //     totalscore: count++,
+        //     totalLists: list++
+        // });
+        $('.loading').html('<h1>Your Checklist has been saved!</h1>');
         return false;
     });
 });
