@@ -464,6 +464,7 @@ $(document).ready(function () {
     //
     $('#checkSubmit').on('click', function (e) {
         e.preventDefault();
+        $('.loading').html('<img class="loadingGif" src="assets/img/load.gif" alt="loading...">');
         var count = 1;
         var title = '';
         var sympArray = [];
@@ -557,6 +558,7 @@ $(document).ready(function () {
                 score: count
             };
             console.log(userChecklist);
+            $('.loadingGif').remove();
         }
         var updates = {};
         updates['/posts/' + newPostKey] = userChecklist;
@@ -567,6 +569,7 @@ $(document).ready(function () {
         //     totalscore: count++,
         //     totalLists: list++
         // });
+        $('.loading').html('<h1>Your Checklist has been saved!</h1>');
         return false;
     });
 });
